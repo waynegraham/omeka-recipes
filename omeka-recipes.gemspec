@@ -4,9 +4,9 @@ require File.expand_path('../lib/omeka-recipes/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Wayne Graham"]
   gem.email         = ["wayne.graham@virginia.edu"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Capistrano recipes for Omeka}
+  gem.summary       = %q{Capistrano recipes for deploying Omeka}
+  gem.homepage      = "https://github.com/waynegraham/omeka-recipes"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -14,4 +14,10 @@ Gem::Specification.new do |gem|
   gem.name          = "omeka-recipes"
   gem.require_paths = ["lib"]
   gem.version       = Omeka::Recipes::VERSION
+
+  gem.extra_rdoc_files = %w(LICENSE README.md)
+
+  gem.add_dependency "capistrano", ">= 2.5.9"
+  gem.add_dependency "capistrano-ext", ">= 1.2.1"
+
 end
