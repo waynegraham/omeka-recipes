@@ -30,7 +30,7 @@ Capistrano::Configuration.instance.load do
       end
 
       desc "OmekaRecipes| Create MySQL database and user for this environment using promted values"
-      task :fetch_dump, :roles => :db, :only => { :primary => true } do
+      task :setup, :roles => :db, :only => { :primary => true } do
         prepare_for_db_command
 
         sql = <<-SQL
