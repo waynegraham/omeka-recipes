@@ -24,11 +24,6 @@ Capistrano::Configuration.instance.load do
       run "cd #{current_path}/application/config && mv config.ini.changeme config.ini"
     end
 
-    desc 'Link the db.ini file'
-    task :link_db_ini, :except => {:no_release => true} do
-      run "cd {#current_path} && ln -snf #{shared_path}/db.ini"
-    end
-
     desc 'Move the archive directory out of the way'
     task :move_archive_dir do
       run "mv #{current_path}/archive #{current_path}/archive_deleteme"
@@ -46,18 +41,25 @@ Capistrano::Configuration.instance.load do
 
     desc 'Deploy the plugins defined in the plugins hash'
     task :plugins do
-      git_clone(themes, 'themes')
+      plugins.each do |title, location|
+        run "cd  #{current_path}/plugins && rm -rf #{title}"
+        run "cd  #{current_path}/plugins && git clone #{location}"
+      end
     end
 
     desc 'Deploy the themes defined in the themes hash'
     task :themes do
-      git_clone(themes, 'themes')
+      themes.each do |title, location|
+        run "cd #{current_path}/themes && rm -rf #{title}"
+        run "cd #{current_path}/themes && git clone #{location}"
+      end
     end
 
   end
 
   after 'deploy:cold', 'omeka:fix_archive_permissions', 'omeka:move_archive_dir'
-  after 'deploy:create_symlink', 'omeka:move_archive_dir_bak', 'omeka:link_archive_dir', 'omeka:link_db_ini'
-  after 'deploy', 'omeka:get_themes', 'omeka:get_plugins', 'omeka:rename_files'
+  #before 'deploy:create_symlink', 'omeka:move_archive_dir'
+  #after 'deploy:create_symlink', 'omeka:move_archive_dir', 'omeka:link_archive_dir'
+  #after 'deploy', 'omeka:themes', 'omeka:plugins', 'omeka:rename_files'
 
 end

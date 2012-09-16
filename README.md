@@ -13,7 +13,7 @@ Useful Capistrano recipes including:
 * `cap apache:restart`
 * `cap apache:start`
 * `cap apache:stop`
-* `cap db:mysql:create_ini`
+* `cap db:create_ini`
 * `cap db:myql:dump`
 * `cap db:myql:fetch_dump`
 * `cap db:myql:restore`
@@ -100,6 +100,8 @@ set :repository,  "git://github.com/omeka/Omeka.git"
 
 set :scm, :git
 
+set :branch, 'stable-1.5'
+
 plugins = {
   'Neatline' => 'git://github.com/scholarslab/Neatline.git',
   'NeatlineFeatures' => 'git://github.com/scholarslab/NeatlineFeatures.git',
@@ -110,7 +112,7 @@ plugins = {
 
 themes = {
   'mcos-omeka-theme' => 'git://github.com/scholarslab/mcos-omeka-theme.git'
-}
+[[}]]
 
 after "deploy:restart", "deploy:cleanup"
 ```
@@ -120,7 +122,7 @@ tell capistrano where to go.
 
 ```ruby
 server 'server.org', :app, :web, :primary => true
-[[```]]
+```
 
 And your staging:
 
