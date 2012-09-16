@@ -44,7 +44,10 @@ Or install it yourself as:
 To set up the initial Capistrano deploy file, go to your application
 folder in the command line and enter the `capify` command:
 
-    $ capify .
+```bash
+$ capify .
+$ cap multistage:prepare
+```
 
 ### Configuration
 
@@ -81,6 +84,35 @@ themes = {
   'emiglio' => 'git://github.com/omeka/theme-emiglio.git'
 }
 ```
+## Example Config
+
+The following is an example of a `config/deploy.rb` file:
+
+```ruby
+set :stages, %(production staging)
+set :default_stage, "staging"
+require 'capistrano/ext/multistage'
+
+require 'omeka-recipes'
+
+set :application, "omeka"
+set :repository,  "git://github.com/omeka/Omeka.git"
+
+set :scm, :git
+
+plugins = {
+  'Neatline' => 'git://github.com/scholarslab/Neatline.git',
+  'NeatlineFeatures' => 'git://github.com/scholarslab/NeatlineFeatures.git',
+  'NeatlineMaps' => 'git://github.com/scholarslab/NeatlineMaps.git',
+  'NeatlineTime' => 'git://github.com/scholarslab/NeatlineTime.git',
+  'SolrSearch' => 'git://github.com/scholarslab/SolrSearch.git',
+}
+
+themes = {
+  'mcos-omeka-theme' => 'git://github.com/scholarslab/mcos-omeka-theme.git'
+}
+```
+
 
 ### RVM
 
