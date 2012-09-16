@@ -97,7 +97,7 @@ See [http://rvm.beginrescueend.com/rvm/install](the rvm site) for more informati
 
 # Copyright
 
-See the [LICENSE](LICENSE) for more information.
+See the [https://github.com/waynegraham/omeka-recipes/blob/master/LICENSE](LICENSE) for more information.
 
 ## Contributing
 
