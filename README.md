@@ -49,10 +49,12 @@ folder in the command line and enter the `capify` command:
 
 Inside a newly created `config/deploy.rb` file, add this:
 
-    require 'capistrano/ext/multistage'
+```ruby
+require 'capistrano/ext/multistage'
 
-    # This should go at the end of the deploy.rb file
-    require 'capistrano_omeka'
+# This should go at the end of the deploy.rb file
+require 'capistrano_omeka'
+```
 
 ### RVM
 
