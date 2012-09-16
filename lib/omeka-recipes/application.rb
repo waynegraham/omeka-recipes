@@ -4,9 +4,9 @@ Capistrano::Configuration.instance.load do
   set :group, 'www-data'  unless exists?(:group)
 
   # Server settings
-  set :web_server, :apache2 unless exists(:web_server)
+  set :web_server, 'apache2' unless exists?(:web_server)
   set :application_port, 80 unless exists?(:application_port)
-  set :runner, user  
+  set :runner, user
 
   # SCM Settings
   set :scm, :git
@@ -25,12 +25,11 @@ Capistrano::Configuration.instance.load do
   set :using_rvm, true unless exists?(:using_rvm)
 
   if using_rvm
-    $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # add rvm lib to load path
+    #$:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # add rvm lib to load path
     require 'rvm/capistrano' #load rvm capistrano plugin
 
     set :rvm_ruby_string, 'ree' unless exists?(:rvm_ruby_string)
   end
-
 
   set :shared_dirs, %w(archives) unless exists?(:shared_dirs)
 

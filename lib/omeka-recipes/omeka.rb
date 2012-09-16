@@ -45,19 +45,19 @@ Capistrano::Configuration.instance.load do
     end
 
     desc 'Deploy the plugins defined in the plugins hash'
-    task :get_plugins do
+    task :plugins do
       git_clone(themes, 'themes')
     end
 
     desc 'Deploy the themes defined in the themes hash'
-    task :get_themes do
+    task :themes do
       git_clone(themes, 'themes')
     end
 
   end
 
   after 'deploy:cold', 'omeka:fix_archive_permissions', 'omeka:move_archive_dir'
-  after 'deploy:symlink', 'omeka:move_archive_dir_bak', 'omeka:link_archive_dir', 'omeka:link_db_ini'
+  after 'deploy:create_symlink', 'omeka:move_archive_dir_bak', 'omeka:link_archive_dir', 'omeka:link_db_ini'
   after 'deploy', 'omeka:get_themes', 'omeka:get_plugins', 'omeka:rename_files', 'omeka:cleanup'
 
 end

@@ -1,6 +1,6 @@
 require 'erb'
 
-Capistrano::Configuration.instance load do
+Capistrano::Configuration.instance.load do
   namespace :db do
     namespace :mysql do
 

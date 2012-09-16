@@ -9,20 +9,21 @@ Useful Capistrano recipes including:
 
 ## Included Tasks
 
-* `cap apache:stop`
-* `cap apache:start`
-* `cap apache:restart`
 * `cap apache:reload`
-* `cap db:create_ini`
-* `cap db:mysql:setup`
+* `cap apache:restart`
+* `cap apache:start`
+* `cap apache:stop`
+* `cap db:mysql:create_ini`
 * `cap db:myql:dump`
 * `cap db:myql:fetch_dump`
 * `cap db:myql:restore`
+* `cap db:mysql:setup`
 * `cap log:rotate`
 * `cap log:tail`
-* `cap omeka:symlinks`
-* `cap omeka:themes`
+* `cap omeka:db_ini`
 * `cap omeka:plugins`
+* `cap omeka:themes`
+* `cap symlinks:make`
 
 ## Installation
 
@@ -56,6 +57,31 @@ require 'capistrano/ext/multistage'
 require 'capistrano_omeka'
 ```
 
+### Plugins
+Plugins are defined in the `plugins` hash, giving a plugin name, and it's
+`git` repo. Be sure to use a **read-only** version.
+
+```ruby
+plugins = {
+  'Neatline' => 'git://github.com/scholarslab/Neatline.git',
+  'NeatlineMaps' => 'git://github.com/scholarslab/NeatlineMaps.git',
+  'CsvImport' => 'git://github.com/omeka/plugin-CsvImport.git',
+  'Scripto' => 'git://github.com/omeka/plugin-Scripto.git'
+}
+```
+
+### Themes
+
+Themes are defined in the `themes` hash, passing a theme name and it's
+`git` repository. 
+
+```ruby
+themes = {
+  'neatline' => 'git://github.com/scholarslab/neatlinetheme.git'
+  'emiglio' => 'git://github.com/omeka/theme-emiglio.git'
+}
+```
+
 ### RVM
 
 RVM is enabled by default, but you can disable it by setting `:use_rvm,
@@ -71,7 +97,7 @@ See [http://rvm.beginrescueend.com/rvm/install](the rvm site) for more informati
 
 # Copyright
 
-See the [LICENSE] for more information.
+See the [LICENSE](LICENSE) for more information.
 
 ## Contributing
 
