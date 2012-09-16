@@ -47,24 +47,24 @@ Capistrano::Configuration.instance.load do
             end
           end
       end
+    end
 
-      desc "|OmekaRecipes| Create db.ini in shared path with settings for current stage and test env"
-      task :create_ini do
-        set(:username) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
-        set(:password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
+    desc "|OmekaRecipes| Create db.ini in shared path with settings for current stage and test env"
+    task :create_ini do
+      set(:username) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
+      set(:password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
 
-        db_config = ERB.new <<-EOF
-        [database]
-        host = localhost
-        username = #{username}
-        password = #{password}
-        dbname = #{application}_#{environment}
-        prefix = omeka_
-        charset = utf8
-        EOF
+      db_config = ERB.new <<-EOF
+[database]
+host = localhost
+username = #{username}
+password = #{password}
+dbname = #{application}_#{environment}
+prefix = omeka_
+charset = utf8
+EOF
 
         put db_config.result, "#{shared_path}/db.ini"
-      end
     end
 
 
