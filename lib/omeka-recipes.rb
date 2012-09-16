@@ -1,7 +1,6 @@
+require "capistrano"
+require "capistrano/cli"
+require "helpers"
 require "omeka-recipes/version"
 
-module Omeka
-  module Recipes
-    # Your code goes here...
-  end
-end
+Dir.glob(File.join(File.dirname(__FILE__), 'omeka-recipes/*.rb')).sort.each { |f| load f }
