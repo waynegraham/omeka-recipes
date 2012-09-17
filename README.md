@@ -127,7 +127,7 @@ server 'server.org', :app, :web, :primary => true
 And your staging:
 
 ```ruby
-server 'staging.server.org', :app, :web, :primary => true
+server 'staging.server.org', :app, :db, :web, :primary => true
 ```
 
 

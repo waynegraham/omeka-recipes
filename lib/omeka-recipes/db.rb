@@ -8,8 +8,8 @@ Capistrano::Configuration.instance.load do
       WARNING: This locks your database tables for the duraction of the mysqldump."
       task :dump, :roles => :db, :only => { :primary => true } do
         prepare_from_ini
-        run "mysqldump --user=#{username} --host=#{host} -p #{db_name} | bzip2 -z9 > #{db_remote_file}" do |channel, stream, out|
-          ch.send_data "#{password}\n" if out =~ /^Enter password:/
+        run "mysqldump --user=#{username} --host=#{host} -p #{name} | bzip2 -z9 > #{db_remote_file}" do |channel, stream, out|
+          channel.send_data "#{password}\n" if out =~ /^Enter password:/
           puts out
         end
       end
@@ -17,8 +17,8 @@ Capistrano::Configuration.instance.load do
       desc "|OmekaRecipes| Restores the database from the latest compressed dump"
       task :restore, :roles => :db, :only => { :primary => true } do
         prepare_from_ini
-        run "bzcat #{db_remote_file} | mysql --user=#{username} -p --host=#{host} #{db_name}" do |channel, stream, out|
-          ch.send_data "#{password}" if out =~ /^Enter password:/
+        run "bzcat #{db_remote_file} | mysql --user=#{username} -p --host=#{host} #{name}" do |channel, stream, out|
+          channel.send_data "#{password}" if out =~ /^Enter password:/
           puts out
         end
       end
@@ -51,56 +51,58 @@ Capistrano::Configuration.instance.load do
 
     desc "|OmekaRecipes| Create db.ini in shared path with settings for current stage and test env"
     task :create_ini do
+      set(:host)     { Capistrano::CLI.ui.ask "Enter #{environment} database host:" }
       set(:username) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
       set(:password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
 
       db_config = ERB.new <<-EOF
 [database]
-host = localhost
-username = #{username}
-password = #{password}
-dbname = #{application}_#{environment}
-prefix = omeka_
-charset = utf8
+host     = "#{host}"
+username = "#{username}"
+password = "#{password}"
+name     = "#{application}_#{environment}"
+prefix   = "omeka_"
 EOF
 
-        put db_config.result, "#{shared_path}/db.ini"
+      put db_config.result, "#{shared_path}/db.ini"
     end
+  end
 
+  # Sets database variables
+  def prepare_from_ini
 
-    # Sets database variables
-    def prepare_from_ini
-      set(:db_file) { "#{application}-dump.sql.bz2" }
-      set(:db_remote_file) { "#{shared_path}/backup/#{db_file}" }
-      set(:db_local_file) { "tmp/#{db_file}" }
-      set(:username) { db_config["username"] }
-      set(:password) { db_config["password"] }
-      set(:host) { db_config["host"] }
-      set(:database) { db_config["dbname"] }
-      set(:prefix) { db_config["prefix"] }
-      set(:charset) { db_config["charset"] }
-    end
+    set(:db_file) { "#{application}-dump.sql.bz2" }
+    set(:db_remote_file) { "#{shared_path}/backup/#{db_file}" }
+    set(:db_local_file) { "tmp/#{db_file}" }
+    set(:username) { db_config['database']['username'] }
+    set(:password) { db_config['database']["password"] }
+    set(:host) { db_config['database']["host"] }
+    set(:database) { db_config['database']["name"] }
+    set(:prefix) { db_config['database']["prefix"] }
+  end
 
-    def db_config
-      @db_config ||= fetch_db_ini
-    end
+  def db_config
+    @db_config ||= fetch_db_ini
+  end
 
-    def fetch_db_ini
-      require 'IniFile'
-      file = capture "cat #{shared_path}/db.ini"
-      db_config = IniFile.new(file)
-    end
+  def fetch_db_ini
+    require 'IniFile'
 
-    def prepare_for_db_command
-      set :database, "#{application}_#{environment}"
-      set(:db_admin_user) { Capistrano::CLI.ui.ask "Username with priviledged database access (to create database):" }
-      set(:username) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
-      set(:password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
-    end
+    file = capture "cat #{shared_path}/db.ini"
 
-    after "deploy:setup" do
-      db.create_ini if Capistrano::CLI.ui.agree("Create db.ini in application's shared path? [Yn]")
-    end
+    db_config = IniFile.new(file).to_h
 
   end
+
+  def prepare_for_db_command
+    set :database, "#{application}_#{environment}"
+    set(:db_admin_user) { Capistrano::CLI.ui.ask "Username with priviledged database access (to create database):" }
+    set(:username) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
+    set(:password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
+  end
+
+  after "deploy:setup" do
+    db.create_ini if Capistrano::CLI.ui.agree("Create db.ini in application's shared path? [Yn]")
+  end
+
 end
