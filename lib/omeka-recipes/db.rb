@@ -29,7 +29,7 @@ Capistrano::Configuration.instance.load do
         download db_remote_file, db_local_file, :via => :scp
       end
 
-      desc "OmekaRecipes| Create MySQL database and user for this environment using promted values"
+      desc "|OmekaRecipes| Create MySQL database and user for this environment using promted values"
       task :setup, :roles => :db, :only => { :primary => true } do
         prepare_for_db_command
 
@@ -73,7 +73,7 @@ EOF
 
     set(:db_file) { "#{application}-dump.sql.bz2" }
     set(:db_remote_file) { "#{shared_path}/backup/#{db_file}" }
-    set(:db_local_file) { "tmp/#{db_file}" }
+    set(:db_local_file) { "/tmp/#{db_file}" }
     set(:username) { db_config['database']['username'] }
     set(:password) { db_config['database']["password"] }
     set(:host) { db_config['database']["host"] }
