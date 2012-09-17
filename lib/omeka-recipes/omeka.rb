@@ -5,7 +5,7 @@ Capistrano::Configuration.instance.load do
   def git_clone(hash, directory)
     hash.each do |name, location|
       run "cd #{current_path}/#{directory} && rm -rf #{name}"
-      run "cd #{current_path}/#{directory} && git clone #{location}"
+      run "cd #{current_path}/#{directory} && git clone #{location} --quiet"
     end
   end
 
@@ -40,19 +40,13 @@ Capistrano::Configuration.instance.load do
     end
 
     desc 'Deploy the plugins defined in the plugins hash'
-    task :plugins do
-      plugins.each do |title, location|
-        run "cd  #{current_path}/plugins && rm -rf #{title}"
-        run "cd  #{current_path}/plugins && git clone #{location}"
-      end
+    task :get_plugins do
+      git_clone(plugins, 'plugins')
     end
 
     desc 'Deploy the themes defined in the themes hash'
-    task :themes do
-      themes.each do |title, location|
-        run "cd #{current_path}/themes && rm -rf #{title}"
-        run "cd #{current_path}/themes && git clone #{location}"
-      end
+    task :get_themes do
+      git_clone(themes, 'themes')
     end
 
   end
@@ -60,6 +54,6 @@ Capistrano::Configuration.instance.load do
   after 'deploy:cold', 'omeka:fix_archive_permissions', 'omeka:move_archive_dir'
   #before 'deploy:create_symlink', 'omeka:move_archive_dir'
   #after 'deploy:create_symlink', 'omeka:move_archive_dir', 'omeka:link_archive_dir'
-  #after 'deploy', 'omeka:themes', 'omeka:plugins', 'omeka:rename_files'
+  after 'deploy', 'omeka:get_themes', 'omeka:get_plugins', 'omeka:rename_files'
 
 end
