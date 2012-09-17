@@ -53,7 +53,7 @@ Capistrano::Configuration.instance.load do
 
   after 'deploy:cold', 'omeka:fix_archive_permissions', 'omeka:move_archive_dir'
   #before 'deploy:create_symlink', 'omeka:move_archive_dir'
-  #after 'deploy:create_symlink', 'omeka:move_archive_dir', 'omeka:link_archive_dir'
+  after 'deploy:create_symlink', 'omeka:link_archive_dir'
   after 'deploy', 'omeka:get_themes', 'omeka:get_plugins', 'omeka:rename_files'
 
 end
