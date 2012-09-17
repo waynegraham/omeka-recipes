@@ -112,7 +112,7 @@ plugins = {
 
 themes = {
   'mcos-omeka-theme' => 'git://github.com/scholarslab/mcos-omeka-theme.git'
-[[}]]
+}
 
 after "deploy:restart", "deploy:cleanup"
 ```
