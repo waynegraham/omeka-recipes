@@ -57,7 +57,7 @@ Inside a newly created `config/deploy.rb` file, add this:
 require 'capistrano/ext/multistage'
 
 # This should go at the end of the deploy.rb file
-require 'capistrano_omeka'
+require 'capistrano-omeka'
 ```
 
 ### Plugins
@@ -65,7 +65,7 @@ Plugins are defined in the `plugins` hash, giving a plugin name, and it's
 `git` repo. Be sure to use a **read-only** version.
 
 ```ruby
-plugins = {
+set :plugins, {
   'Neatline' => 'git://github.com/scholarslab/Neatline.git',
   'NeatlineMaps' => 'git://github.com/scholarslab/NeatlineMaps.git',
   'CsvImport' => 'git://github.com/omeka/plugin-CsvImport.git',
@@ -79,7 +79,7 @@ Themes are defined in the `themes` hash, passing a theme name and it's
 `git` repository. 
 
 ```ruby
-themes = {
+set :themes, {
   'neatline' => 'git://github.com/scholarslab/neatlinetheme.git'
   'emiglio' => 'git://github.com/omeka/theme-emiglio.git'
 }
@@ -102,7 +102,7 @@ set :scm, :git
 
 set :branch, 'stable-1.5'
 
-plugins = {
+set :plugins, {
   'Neatline' => 'git://github.com/scholarslab/Neatline.git',
   'NeatlineFeatures' => 'git://github.com/scholarslab/NeatlineFeatures.git',
   'NeatlineMaps' => 'git://github.com/scholarslab/NeatlineMaps.git',
@@ -110,7 +110,7 @@ plugins = {
   'SolrSearch' => 'git://github.com/scholarslab/SolrSearch.git',
 }
 
-themes = {
+set :themes, {
   'mcos-omeka-theme' => 'git://github.com/scholarslab/mcos-omeka-theme.git'
 }
 
