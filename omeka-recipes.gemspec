@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "omeka-recipes"
   gem.require_paths = ["lib"]
-  gem.version       = Omeka::Recipes::VERSION
+  gem.version       = Omeka::Recipes::RECIPES_VERSION
 
   gem.extra_rdoc_files = %w(LICENSE README.md)
 
@@ -21,4 +21,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency "capistrano-ext", ">= 1.2.1"
   gem.add_dependency "capistrano-multistage", "~> 0.0.4"
   gem.add_dependency "capistrano-php", "~> 1.0.0"
+  gem.add_dependency "inifile", "~> 2.0.2"
 end
