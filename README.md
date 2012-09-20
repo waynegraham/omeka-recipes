@@ -46,7 +46,6 @@ folder in the command line and enter the `capify` command:
 
 ```bash
 $ capify .
-$ cap multistage:prepare
 ```
 
 ### Configuration
@@ -56,8 +55,13 @@ Inside a newly created `config/deploy.rb` file, add this:
 ```ruby
 require 'capistrano/ext/multistage'
 
-# This should go at the end of the deploy.rb file
 require 'capistrano-omeka'
+```
+
+Now set up capistrano to do multistage 
+
+```bash
+cap multistage:prepare
 ```
 
 ### Plugins
@@ -80,7 +84,7 @@ Themes are defined in the `themes` hash, passing a theme name and it's
 
 ```ruby
 set :themes, {
-  'neatline' => 'git://github.com/scholarslab/neatlinetheme.git'
+  'neatline' => 'git://github.com/scholarslab/neatlinetheme.git',
   'emiglio' => 'git://github.com/omeka/theme-emiglio.git'
 }
 ```
