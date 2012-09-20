@@ -55,7 +55,7 @@ Inside a newly created `config/deploy.rb` file, add this:
 ```ruby
 require 'capistrano/ext/multistage'
 
-require 'capistrano-omeka'
+require 'omeka-recipes'
 ```
 
 Now set up capistrano to do multistage 
