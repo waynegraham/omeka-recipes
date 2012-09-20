@@ -1,5 +1,5 @@
 module Omeka
   module Recipes
-    VERSION = "0.2.0"
+    RECIPES_VERSION = "0.2.1"
   end
 end
