@@ -1,0 +1,18 @@
+## 0.3.0
+
+Additional tasks for deploy for cleaning up, performing git-style upgrades,
+and mapping setup directories for the `#{shared_path}`.
+
+## 0.2.1
+
+This release contained mainly bug fixes and fixed consistency issues with the
+descriptions of individual tasks.
+
+* Ensure '|OmekaRecipes|' surrounds all tasks. Jeremy Boggs (clioweb)
+* Fixes VERSION constant redefinition
+* Added IniFile dependency to gem
+
+## 0.2.0
+
+Initial release of the gem.
+
