@@ -1,5 +1,7 @@
 # Omeka::Recipes
 
+[![Build Status](https://secure.travis-ci.org/waynegraham/omeka-recipes.png)](http://travis-ci.org/waynegraham/omeka-recipes)
+
 Useful Capistrano recipes including:
 
 * Create MySQL database and user on server (via prompts)
