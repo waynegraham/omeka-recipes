@@ -10,7 +10,7 @@ Capistrano::Configuration.instance.load do
 
     desc '|OmekaRecipes| Destroys everything'
     task :seppuku, :roles => :app, :except => { :no_release => true } do
-      run "rm -rf #{currenth_path}; rm -rf #{shared_path}"
+      run "rm -rf #{current_path}; rm -rf #{shared_path}"
     end
 
     desc '|OmekaRecipes| Create shared dirs'
