@@ -1,6 +1,6 @@
 Capistrano::Configuration.instance.load do
   # these are set to the same structure in shared <=> current
-  set :normal_symlinks, %w(application/logs/ archive) unless exists?(:normal_symlinks)
+  set :normal_symlinks, %w(archive) unless exists?(:normal_symlinks)
 
   # weird symlinks go somewhere else
   set :weird_symlinks, {'db.ini' => 'db.ini.changeme'} unless exists?( :weird_symlinks )
