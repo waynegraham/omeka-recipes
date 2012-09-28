@@ -53,7 +53,7 @@ Capistrano::Configuration.instance.load do
 
     desc '|OmekaRecipes| Deploy the themes defined in the themes hash'
     task :get_themes do
-      git_clone(themes, 'themes') unless themes.defined?
+      git_clone(themes, 'themes')
     end
 
     namespace :maintenance do
