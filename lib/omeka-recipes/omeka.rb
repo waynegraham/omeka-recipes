@@ -41,7 +41,8 @@ Capistrano::Configuration.instance.load do
 
     desc '|OmekaRecipes| Move a pristine copy of the archives/files directory to the shared_path'
     task :move_files_to_shared, :except => { :no_release => true } do
-      run "touch #{shared_path}/db.ini"
+      #run "touch #{shared_path}/db.ini"
+      run "mkdir -p #{shared_path}/application/logs/"
     end
 
     desc '|OmekaRecipes| Deploy the plugins defined in the plugins hash'
