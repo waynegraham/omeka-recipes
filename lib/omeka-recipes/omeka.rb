@@ -104,7 +104,7 @@ Capistrano::Configuration.instance.load do
       which, (if your server is configured properly) will make Omeka web-
       accessible again.
     DESC
-    task :enable, :roles => :web, :except => { :no_release => true } do
+    task :end, :roles => :web, :except => { :no_release => true } do
       run "rm -f #{shared_path}/system/#{maintenance_basename}.html"
     end
 
