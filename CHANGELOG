@@ -4,6 +4,8 @@ Additional tasks for deploy for cleaning up, performing git-style upgrades,
 and mapping setup directories for the `#{shared_path}`.
 
 * Travis integration
+* Maintenance pages for system upgrades
+* Seppuku for destroying everything
 
 
 ## 0.2.1

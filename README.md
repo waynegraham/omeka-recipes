@@ -1,180 +1,179 @@
-<h1>Omeka::Recipes</h1>
+# Omeka::Recipes
 
-<p><a href="http://travis-ci.org/waynegraham/omeka-recipes"><img src="https://secure.travis-ci.org/waynegraham/omeka-recipes.png" alt="Build Status" title="" /></a></p>
+[![Build Status](https://secure.travis-ci.org/waynegraham/omeka-recipes.png)](http://travis-ci.org/waynegraham/omeka-recipes)
 
-<p>Useful Capistrano recipes including:</p>
+Useful Capistrano recipes including:
 
-<ul>
-<li>Create MySQL database and user on server (via prompts)</li>
-<li>Restart/Stop/Start Apache/HTTPD server</li>
-<li>Log rotation and tailing commands</li>
-<li>Deploy Omeka</li>
-</ul>
+* Create MySQL database and user on server (via prompts)
+* Restart/Stop/Start Apache/HTTPD server
+* Log rotation and tailing commands
+* Deploy Omeka
 
-<h2>Included Tasks</h2>
+## Included Tasks
 
-<ul>
-<li><code>cap apache:reload</code></li>
-<li><code>cap apache:restart</code></li>
-<li><code>cap apache:start</code></li>
-<li><code>cap apache:stop</code></li>
-<li><code>cap db:create_ini</code></li>
-<li><code>cap db:myql:dump</code></li>
-<li><code>cap db:myql:fetch_dump</code></li>
-<li><code>cap db:myql:restore</code></li>
-<li><code>cap db:mysql:setup</code></li>
-<li><code>cap log:rotate</code></li>
-<li><code>cap log:tail</code></li>
-<li><code>cap omeka:db_ini</code></li>
-<li><code>cap omeka:plugins</code></li>
-<li><code>cap omeka:themes</code></li>
-<li><code>cap symlinks:make</code></li>
-</ul>
+* cap apache:reload                 # |OmekaRecipes| Reload Apache
+* cap apache:restart                # |OmekaRecipes| Restart Apache
+* cap apache:start                  # |OmekaRecipes| Start Apache
+* cap apache:stop                   # |OmekaRecipes| Stop Apache
+* cap db:create_ini                 # |OmekaRecipes| Create db.ini in shared pa...
+* cap db:mysql:dump                 # |OmekaRecipes| Performs a compressed data...
+* cap db:mysql:fetch_dump           # |OmekaRecipes| Downloads the compressed d...
+* cap db:mysql:restore              # |OmekaRecipes| Restores the database from...
+* cap db:mysql:setup                # |OmekaRecipes| Create MySQL database and ...
+* cap deploy                        # |OmekaRecipes| Deploy omeka, github-style
+* cap deploy:seppuku                # |OmekaRecipes| Destroys everything
+* cap deploy:setup_dirs             # |OmekaRecipes| Create shared dirs
+* cap deploy:symlink                # |OmekaRecipes| Alias for symlinks:make
+* cap log:rotate                    # |OmekaRecipes| Install log rotation scrip...
+* cap log:tail                      # |OmekaRecipes| Tail all log files
+* cap omeka:db_ini                  # |OmekaRecipes| Add the db.ini to the shar...
+* cap omeka:fix_archive_permissions # |OmekaRecipes| Ensure the archive directo...
+* cap omeka:get_plugins             # |OmekaRecipes| Deploy the plugins defined...
+* cap omeka:get_themes              # |OmekaRecipes| Deploy the themes defined ...
+* cap omeka:link_archive_dir        # |OmekaRecipes| Link the archive directoy ...
+* cap omeka:maintenance:start       # |OmekaRecipes| Add a maitenance page for ...
+* cap omeka:move_archive_dir        # |OmekaRecipes| Move the archive directory...
+* cap omeka:move_files_to_shared    # |OmekaRecipes| Move a pristine copy of th...
+* cap omeka:rename_files            # |OmekaRecipes| Rename files
+* cap symlinks:make                 # |OmekaRecipes| Make all the symlinks in a...`
 
-<h2>Installation</h2>
+## Installation
 
-<p>Add this line to your application's Gemfile:</p>
+Add this line to your application's Gemfile:
 
-<pre><code>gem 'omeka-recipes'
-</code></pre>
+    gem 'omeka-recipes'
 
-<p>And then execute:</p>
+And then execute:
 
-<pre><code>$ bundle
-</code></pre>
+    $ bundle
 
-<p>Or install it yourself as:</p>
+Or install it yourself as:
 
-<pre><code>$ gem install omeka-recipes
-</code></pre>
+    $ gem install omeka-recipes
+ 
+## Usage
 
-<h2>Usage</h2>
+To set up the initial Capistrano deploy file, go to your application
+folder in the command line and enter the `capify` command:
 
-<p>To set up the initial Capistrano deploy file, go to your application
-folder in the command line and enter the <code>capify</code> command:</p>
-
-<p><code>bash
+```bash
 $ capify .
-</code></p>
+```
 
-<h3>Configuration</h3>
+### Configuration
 
-<p>Inside a newly created <code>config/deploy.rb</code> file, add this:</p>
+Inside a newly created `config/deploy.rb` file, add this:
 
-<p>```ruby
-require 'capistrano/ext/multistage'</p>
+```ruby
+require 'capistrano/ext/multistage'
 
-<p>require 'omeka-recipes'
-```</p>
+require 'omeka-recipes'
+```
 
-<p>Now set up capistrano to do multistage </p>
+Now set up capistrano to do multistage 
 
-<p><code>bash
+```bash
 cap multistage:prepare
-</code></p>
+```
 
-<h3>Plugins</h3>
+### Plugins
+Plugins are defined in the `plugins` hash, giving a plugin name, and it's
+`git` repo. Be sure to use a **read-only** version.
 
-<p>Plugins are defined in the <code>plugins</code> hash, giving a plugin name, and it's
-<code>git</code> repo. Be sure to use a <strong>read-only</strong> version.</p>
-
-<p><code>ruby
+```ruby
 set :plugins, {
-  'Neatline' =&gt; 'git://github.com/scholarslab/Neatline.git',
-  'NeatlineMaps' =&gt; 'git://github.com/scholarslab/NeatlineMaps.git',
-  'CsvImport' =&gt; 'git://github.com/omeka/plugin-CsvImport.git',
-  'Scripto' =&gt; 'git://github.com/omeka/plugin-Scripto.git'
+  'Neatline' => 'git://github.com/scholarslab/Neatline.git',
+  'NeatlineMaps' => 'git://github.com/scholarslab/NeatlineMaps.git',
+  'CsvImport' => 'git://github.com/omeka/plugin-CsvImport.git',
+  'Scripto' => 'git://github.com/omeka/plugin-Scripto.git'
 }
-</code></p>
+```
 
-<h3>Themes</h3>
+### Themes
 
-<p>Themes are defined in the <code>themes</code> hash, passing a theme name and it's
-<code>git</code> repository. </p>
+Themes are defined in the `themes` hash, passing a theme name and it's
+`git` repository. 
 
-<p><code>ruby
+```ruby
 set :themes, {
-  'neatline' =&gt; 'git://github.com/scholarslab/neatlinetheme.git',
-  'emiglio' =&gt; 'git://github.com/omeka/theme-emiglio.git'
+  'neatline' => 'git://github.com/scholarslab/neatlinetheme.git',
+  'emiglio' => 'git://github.com/omeka/theme-emiglio.git'
 }
-</code></p>
+```
+## Example Configuration
 
-<h2>Example Configuration</h2>
+The following is an example of a `config/deploy.rb` file:
 
-<p>The following is an example of a <code>config/deploy.rb</code> file:</p>
-
-<p>```ruby
+```ruby
 set :stages, %w(production staging)
 set :default_stage, "staging"
-require 'capistrano/ext/multistage'</p>
+require 'capistrano/ext/multistage'
 
-<p>require 'omeka-recipes'</p>
+require 'omeka-recipes'
 
-<p>set :application, "omeka"
-set :repository,  "git://github.com/omeka/Omeka.git"</p>
+set :application, "omeka"
+set :repository,  "git://github.com/omeka/Omeka.git"
 
-<p>set :scm, :git</p>
+set :scm, :git
 
-<p>set :branch, 'stable-1.5'</p>
+set :branch, 'stable-1.5'
 
-<p>set :plugins, {
+set :plugins, {
   'Neatline' => 'git://github.com/scholarslab/Neatline.git',
   'NeatlineFeatures' => 'git://github.com/scholarslab/NeatlineFeatures.git',
   'NeatlineMaps' => 'git://github.com/scholarslab/NeatlineMaps.git',
   'NeatlineTime' => 'git://github.com/scholarslab/NeatlineTime.git',
   'SolrSearch' => 'git://github.com/scholarslab/SolrSearch.git',
-}</p>
+}
 
-<p>set :themes, {
+set :themes, {
   'mcos-omeka-theme' => 'git://github.com/scholarslab/mcos-omeka-theme.git'
-}</p>
+}
 
-<p>after "deploy:restart", "deploy:cleanup"
-<code>``
+after "deploy:restart", "deploy:cleanup"
+```
 In each of the stages of your deployment (e.g.
-</code>deploy/deploy/production.rb`), you will need to add a definition to
-tell capistrano where to go.</p>
+`deploy/deploy/production.rb`), you will need to add a definition to
+tell capistrano where to go.
 
-<p><code>ruby
-server 'server.org', :app, :web, :primary =&gt; true
-</code></p>
+```ruby
+server 'server.org', :app, :web, :primary => true
+```
 
-<p>And your staging:</p>
+And your staging:
 
-<p><code>ruby
-server 'staging.server.org', :app, :db, :web, :primary =&gt; true
-</code></p>
+```ruby
+server 'staging.server.org', :app, :db, :web, :primary => true
+```
 
-<h3>RVM</h3>
 
-<p>RVM is disabled by default, but you can enable it by setting <code>:use_rvm,
-true</code>. You may also leverage it by setting your <code>rvm_ruby_string</code> to an
-appropriate version (default is <code>1.9.3</code>).</p>
+### RVM
 
-<p>If <code>using_rvm</code> is true, the rvm recipe will load the RVM capistrano
+RVM is disabled by default, but you can enable it by setting `:use_rvm,
+true`. You may also leverage it by setting your `rvm_ruby_string` to an
+appropriate version (default is `1.9.3`).
+
+If `using_rvm` is true, the rvm recipe will load the RVM capistrano
 extensions so you don't have to worry about them during your
-deployments. You will need to make sure you have an <code>.rvmrc</code> file in the
-project directory, and system-wide installation on the servers.</p>
+deployments. You will need to make sure you have an `.rvmrc` file in the
+project directory, and system-wide installation on the servers.
 
-<p>See <a href="the rvm site">http://rvm.beginrescueend.com/rvm/install</a> for more information.</p>
+See [http://rvm.beginrescueend.com/rvm/install](the rvm site) for more information.
 
-<h1>Copyright</h1>
+# Copyright
 
-<p>See the <a href="https://github.com/waynegraham/omeka-recipes/blob/master/LICENSE">LICENSE</a> for more information.</p>
+See the [LICENSE](https://github.com/waynegraham/omeka-recipes/blob/master/LICENSE) for more information.
 
-<h2>Contributing</h2>
+## Contributing
 
-<ol>
-<li>Fork it</li>
-<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
-<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
-<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
-<li>Create a new Pull Request</li>
-</ol>
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
 
-<h2>Contributors</h2>
+## Contributors
 
-<ul>
-<li>Jeremy Boggs (<a href="clioweb">clioweb</a>)</li>
-<li>Wayne Graham (<a href="https://github.com/waynegraham">waynegraham</a>)</li>
-</ul>
+* Jeremy Boggs ([clioweb](clioweb))
+* Wayne Graham ([waynegraham](https://github.com/waynegraham))
+
