@@ -43,6 +43,7 @@ Capistrano::Configuration.instance.load do
     task :move_files_to_shared, :except => { :no_release => true } do
       #run "touch #{shared_path}/db.ini"
       run "mkdir -p #{shared_path}/application/logs/"
+      run "touch #{shared_path}/application/logs/erros.log"
     end
 
     desc '|OmekaRecipes| Deploy the plugins defined in the plugins hash'
@@ -52,7 +53,7 @@ Capistrano::Configuration.instance.load do
 
     desc '|OmekaRecipes| Deploy the themes defined in the themes hash'
     task :get_themes do
-      git_clone(themes, 'themes')
+      git_clone(themes, 'themes') unless themes.defined?
     end
 
     namespace :maintenance do
