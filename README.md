@@ -11,31 +11,31 @@ Useful Capistrano recipes including:
 
 ## Included Tasks
 
-* cap apache:reload                 # |OmekaRecipes| Reload Apache
-* cap apache:restart                # |OmekaRecipes| Restart Apache
-* cap apache:start                  # |OmekaRecipes| Start Apache
-* cap apache:stop                   # |OmekaRecipes| Stop Apache
-* cap db:create_ini                 # |OmekaRecipes| Create db.ini in shared pa...
-* cap db:mysql:dump                 # |OmekaRecipes| Performs a compressed data...
-* cap db:mysql:fetch_dump           # |OmekaRecipes| Downloads the compressed d...
-* cap db:mysql:restore              # |OmekaRecipes| Restores the database from...
-* cap db:mysql:setup                # |OmekaRecipes| Create MySQL database and ...
-* cap deploy                        # |OmekaRecipes| Deploy omeka, github-style
-* cap deploy:seppuku                # |OmekaRecipes| Destroys everything
-* cap deploy:setup_dirs             # |OmekaRecipes| Create shared dirs
-* cap deploy:symlink                # |OmekaRecipes| Alias for symlinks:make
-* cap log:rotate                    # |OmekaRecipes| Install log rotation scrip...
-* cap log:tail                      # |OmekaRecipes| Tail all log files
-* cap omeka:db_ini                  # |OmekaRecipes| Add the db.ini to the shar...
-* cap omeka:fix_archive_permissions # |OmekaRecipes| Ensure the archive directo...
-* cap omeka:get_plugins             # |OmekaRecipes| Deploy the plugins defined...
-* cap omeka:get_themes              # |OmekaRecipes| Deploy the themes defined ...
-* cap omeka:link_archive_dir        # |OmekaRecipes| Link the archive directoy ...
-* cap omeka:maintenance:start       # |OmekaRecipes| Add a maitenance page for ...
-* cap omeka:move_archive_dir        # |OmekaRecipes| Move the archive directory...
-* cap omeka:move_files_to_shared    # |OmekaRecipes| Move a pristine copy of th...
-* cap omeka:rename_files            # |OmekaRecipes| Rename files
-* cap symlinks:make                 # |OmekaRecipes| Make all the symlinks in a...`
+* cap apache:reload                 
+* cap apache:restart                
+* cap apache:start                 
+* cap apache:stop                 
+* cap db:create_ini              
+* cap db:mysql:dump             
+* cap db:mysql:fetch_dump      
+* cap db:mysql:restore        
+* cap db:mysql:setup                
+* cap deploy                       
+* cap deploy:seppuku              
+* cap deploy:setup_dirs          
+* cap deploy:symlink            
+* cap log:rotate               
+* cap log:tail                   
+* cap omeka:db_ini                
+* cap omeka:fix_archive_permissions
+* cap omeka:get_plugins            
+* cap omeka:get_themes              
+* cap omeka:link_archive_dir    
+* cap omeka:maintenance:start  
+* cap omeka:move_archive_dir  
+* cap omeka:move_files_to_shared
+* cap omeka:rename_files       
+* cap symlinks:make          
 
 ## Installation
 
