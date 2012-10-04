@@ -28,6 +28,7 @@ Capistrano::Configuration.instance.load do
       symlinks.make
     end
 
+    desc 'post install message'
     task :like_a_boss, :roles => :app, :except => { :no_release => true } do
       boss <<-eos
  ______________________
