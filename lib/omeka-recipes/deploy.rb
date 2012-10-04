@@ -30,7 +30,7 @@ Capistrano::Configuration.instance.load do
 
     desc 'post install message'
     task :like_a_boss, :roles => :app, :except => { :no_release => true } do
-      boss= <<-eos
+      message = <<-eos
  ______________________
 < Deployed like a boss >
  ----------------------
@@ -39,7 +39,8 @@ Capistrano::Configuration.instance.load do
             (__)\       )\/\
                 ||----w |
                 ||     ||
-      eos
+eos
+      puts message
     end
 
   end
