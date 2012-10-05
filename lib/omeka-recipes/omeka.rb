@@ -10,6 +10,10 @@ Capistrano::Configuration.instance.load do
     end
   end
 
+  def host_and_port
+    return roles[:web].servers.first.host, ssh_options[:port] || roles[:web].servers.first.port || 22
+  end
+
   namespace :omeka do
     desc '|OmekaRecipes| Ensure the archive directory has write permissions'
     task :fix_archive_permissions do
