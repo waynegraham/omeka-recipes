@@ -28,19 +28,19 @@ Capistrano::Configuration.instance.load do
       symlinks.make
     end
 
-    desc 'post install message'
     task :like_a_boss, :roles => :app, :except => { :no_release => true } do
-      message = <<eos
+      message = <<-eos
  ______________________
 < Deployed like a boss >
  ----------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
+        \\   ^__^
+         \\  (oo)\_______
+            (__)\       )\\/\\
                 ||----w |
                 ||     ||
-eos
+      eos
       puts message
+
     end
 
   end
