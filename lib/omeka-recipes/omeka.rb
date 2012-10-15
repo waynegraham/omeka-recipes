@@ -6,7 +6,7 @@ Capistrano::Configuration.instance.load do
   def git_clone(hash, directory)
     hash.each do |name, location|
       run "cd #{current_path}/#{directory} && rm -rf #{name}"
-      run "cd #{current_path}/#{directory} && git clone #{location} name --quiet"
+      run "cd #{current_path}/#{directory} && git clone #{location} #{name} --quiet"
     end
   end
 
