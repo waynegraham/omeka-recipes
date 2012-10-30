@@ -1,12 +1,17 @@
 Capistrano::Configuration.instance.load do
 
   set :omeka_branch, "master" unless exists?(:omeka_branch)
+  set :sync_directories, %w(archive) unless exists?(:sync_directories)
 
   def git_clone(hash, directory)
     hash.each do |name, location|
       run "cd #{current_path}/#{directory} && rm -rf #{name}"
-      run "cd #{current_path}/#{directory} && git clone #{location} --quiet"
+      run "cd #{current_path}/#{directory} && git clone #{location} #{name} --quiet"
     end
+  end
+
+  def host_and_port
+    return roles[:web].servers.first.host, ssh_options[:port] || roles[:web].servers.first.port || 22
   end
 
   namespace :omeka do
@@ -15,6 +20,30 @@ Capistrano::Configuration.instance.load do
       # This _should_ actually change the permissions of the archive directory to
       # be the owner of process running httpd/apache2 daemon.
       run "chmod -R 777 #{current_path}/archive"
+    end
+
+    desc '|OmekaRecipes| Sync the assets directory to your local system'
+    task :sync_assets, :roles => :web, :once => true, :except => { :no_release => true } do
+      desc <<-DESC
+OmekaRecipes Sync declared files from the selected multi_stage environment to
+the local development environment. The synced directories must be declared as
+an array of Strings with the sync_directories variable. The path is relative to
+the root.
+      DESC
+
+      server, port = host_and_port
+      Array(fetch(:sync_directories, [])).each do |syncdir|
+        puts syncdir
+        unless File.directory? "#{syncdir}"
+          logger.info "creating local '#{syncdir}' folder"
+          FileUtils.mkdir_p "#{syncdir}"
+        end
+
+        logger.info "sync #{syncdir} from #{server}:#{port} to local"
+        destination, base = Pathname.new(syncdir).split
+        system "rsync --verbose --archive --compress --copy-links --delete --stats --rsh='ssh -p #{port}' #{user}@#{server}:#{current_path}/#{syncdir} #{destination.to_s}"
+      end
+      logger.important "sync filesystem from the stage '#{stage}' to local complete."
     end
 
     desc '|OmekaRecipes| Rename files'

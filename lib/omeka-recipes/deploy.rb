@@ -1,6 +1,8 @@
 Capistrano::Configuration.instance.load do
   set :shared_children, %w(system logs pids config archive)
 
+  after 'deploy:finalize', 'deploy:like_a_boss'
+
   namespace :deploy do
     desc '|OmekaRecipes| Deploy omeka, github-style'
     task :default, :roles => :app, :except => { :no_release => true } do
@@ -24,6 +26,21 @@ Capistrano::Configuration.instance.load do
     desc '|OmekaRecipes| Alias for symlinks:make'
     task :symlink, :roles => :app, :except => { :no_release => true } do
       symlinks.make
+    end
+
+    task :like_a_boss, :roles => :app, :except => { :no_release => true } do
+      message = <<-eos
+ ______________________
+< Deployed like a boss >
+ ----------------------
+        \\   ^__^
+         \\  (oo)\_______
+            (__)\       )\\/\\
+                ||----w |
+                ||     ||
+      eos
+      puts message
+
     end
 
   end
