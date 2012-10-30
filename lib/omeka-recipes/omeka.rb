@@ -1,7 +1,7 @@
 Capistrano::Configuration.instance.load do
 
   set :omeka_branch, "master" unless exists?(:omeka_branch)
-  set :sync_directories, %w[archive] unless exists?(:sync_directories)
+  set :sync_directories, %w(archive) unless exists?(:sync_directories)
 
   def git_clone(hash, directory)
     hash.each do |name, location|
@@ -33,7 +33,6 @@ the root.
       task :sync_assets, :roles => :web, :once => true do
 
         server, port = host_and_port
-
         Array(fetch(:sync_directories, [])).each do |syncdir|
           puts syncdir
           unless File.directory? "#{syncdir}"
