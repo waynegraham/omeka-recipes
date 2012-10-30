@@ -23,29 +23,27 @@ Capistrano::Configuration.instance.load do
     end
 
     desc '|OmekaRecipes| Sync the assets directory to your local system'
-    task :sync_assets, :except => { :no_release => true } do
+    task :sync_assets, :roles => :web, :once => true, :except => { :no_release => true } do
       desc <<-DESC
 OmekaRecipes Sync declared files from the selected multi_stage environment to
 the local development environment. The synced directories must be declared as
 an array of Strings with the sync_directories variable. The path is relative to
 the root.
       DESC
-      task :sync_assets, :roles => :web, :once => true do
 
-        server, port = host_and_port
-        Array(fetch(:sync_directories, [])).each do |syncdir|
-          puts syncdir
-          unless File.directory? "#{syncdir}"
-            logger.info "creating local '#{syncdir}' folder"
-            FileUtils.mkdir_p "#{syncdir}"
-          end
-
-          logger.info "sync #{syncdir} from #{server}:#{port} to local"
-          destination, base = Pathname.new(syncdir).split
-          system "rsync --verbose --archive --compress --copy-links --delete --stats --rsh='ssh -p #{port}' #{user}@#{server}:#{current_path}/#{syncdir} #{destination.to_s}"
+      server, port = host_and_port
+      Array(fetch(:sync_directories, [])).each do |syncdir|
+        puts syncdir
+        unless File.directory? "#{syncdir}"
+          logger.info "creating local '#{syncdir}' folder"
+          FileUtils.mkdir_p "#{syncdir}"
         end
-        logger.important "sync filesystem from the stage '#{stage}' to local complete."
+
+        logger.info "sync #{syncdir} from #{server}:#{port} to local"
+        destination, base = Pathname.new(syncdir).split
+        system "rsync --verbose --archive --compress --copy-links --delete --stats --rsh='ssh -p #{port}' #{user}@#{server}:#{current_path}/#{syncdir} #{destination.to_s}"
       end
+      logger.important "sync filesystem from the stage '#{stage}' to local complete."
     end
 
     desc '|OmekaRecipes| Rename files'
