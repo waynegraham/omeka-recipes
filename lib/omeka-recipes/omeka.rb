@@ -2,6 +2,7 @@ Capistrano::Configuration.instance.load do
 
   set :omeka_branch, "master" unless exists?(:omeka_branch)
   set :sync_directories, %w(archive) unless exists?(:sync_directories)
+  set :maintenance_basename, 'maitenance' unless exists?(:maintenance_basename)
 
   def git_clone(hash, directory)
     hash.each do |name, location|
@@ -88,7 +89,7 @@ the root.
     namespace :maintenance do
       desc <<-DESC
         |OmekaRecipes| Add a maitenance page for visitors. Disables your Omeka
-        isntance by writing a "#{maintenance_basename}.html" file to each web
+        instance by writing a "#{maintenance_basename}.html" file to each web
         server. The servers must be configured to detect the presence of the file,
         and if it is present, display the maintenance page instead of performaning
         the request.
