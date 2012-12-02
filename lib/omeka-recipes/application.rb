@@ -32,7 +32,7 @@ Capistrano::Configuration.instance.load do
     set :rvm_ruby_string, '1.9.3' unless exists?(:rvm_ruby_string)
   end
 
-  set :shared_dirs, %w(archive system) unless exists?(:shared_dirs)
+  set :shared_dirs, %w(archive system backup) unless exists?(:shared_dirs)
 
   namespace :app do
     task :setup, :roles => :app do
