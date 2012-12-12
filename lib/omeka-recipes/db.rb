@@ -86,7 +86,7 @@ EOF
   end
 
   def fetch_db_ini
-    require 'IniFile'
+    require 'inifile'
 
     file = capture "cat #{shared_path}/db.ini"
 
