@@ -88,9 +88,9 @@ EOF
   def fetch_db_ini
     require 'inifile'
 
-    file = capture "cat #{shared_path}/db.ini"
+    file = capture "cat #{current_path}/db.ini"
 
-    db_config = IniFile.new(file).to_h
+    @db_config = IniFile.new(file).to_h
 
   end
 
