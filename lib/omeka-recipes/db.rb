@@ -1,4 +1,5 @@
 require 'erb'
+require 'fileutils'
 
 Capistrano::Configuration.instance.load do
   namespace :db do
