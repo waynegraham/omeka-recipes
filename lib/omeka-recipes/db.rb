@@ -8,7 +8,7 @@ Capistrano::Configuration.instance.load do
       WARNING: This locks your database tables for the duration of the mysqldump."
       task :dump, :roles => :db, :only => { :primary => true } do
         prepare_from_ini
-        run "mysqldump --user=#{username} --host=#{host} -p #{name} | bzip2 -z9 > #{db_remote_file}" do |channel, stream, out|
+        run "mysqldump --user=#{username} --host=#{host} -p #{db_name} | bzip2 -z9 > #{db_remote_file}" do |channel, stream, out|
           channel.send_data "#{password}\n" if out =~ /^Enter password:/
           puts out
         end
@@ -17,7 +17,7 @@ Capistrano::Configuration.instance.load do
       desc "|OmekaRecipes| Restores the database from the latest compressed dump"
       task :restore, :roles => :db, :only => { :primary => true } do
         prepare_from_ini
-        run "bzcat #{db_remote_file} | mysql --user=#{username} -p --host=#{host} #{name}" do |channel, stream, out|
+        run "bzcat #{db_remote_file} | mysql --user=#{username} -p --host=#{host} #{db_name}" do |channel, stream, out|
           channel.send_data "#{password}" if out =~ /^Enter password:/
           puts out
         end
@@ -75,10 +75,10 @@ EOF
     set(:db_remote_file) { "#{shared_path}/backup/#{db_file}" }
     set(:db_local_file) { "/tmp/#{db_file}" }
     set(:username) { db_config['database']['username'] }
-    set(:password) { db_config['database']["password"] }
-    set(:host) { db_config['database']["host"] }
-    set(:name) { db_config['database']["name"] }
-    set(:prefix) { db_config['database']["prefix"] }
+    set(:password) { db_config['database']['password'] }
+    set(:host) { db_config['database']['host'] }
+    set(:db_name) { db_config['database']['name'] }
+    set(:prefix) { db_config['database']['prefix'] }
   end
 
   def db_config
