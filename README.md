@@ -133,7 +133,7 @@ set :themes, {
 after "deploy:restart", "deploy:cleanup"
 ```
 In each of the stages of your deployment (e.g.
-`deploy/deploy/production.rb`), you will need to add a definition to
+`config/deploy/production.rb`), you will need to add a definition to
 tell capistrano where to go.
 
 ```ruby
