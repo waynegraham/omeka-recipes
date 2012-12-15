@@ -13,7 +13,7 @@ Capistrano::Configuration.instance.load do
         branch = con['branch']
         run "cd #{current_path}/#{directory} && rm -rf #{repo_name[0]}"
         run "cd #{current_path}/#{directory} && git clone #{url} #{repo_name[0]} --quiet"
-        run "cd #{current_path}/#{directory} && git fetch && git checkout #{branch}" unless branch.to_s.empty?
+        run "cd #{current_path}/#{directory} && git fetch --quiet && git checkout #{branch} --quiet" unless branch.to_s.empty?
       end
     end
   end
