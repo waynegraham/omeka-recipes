@@ -1,5 +1,5 @@
 Capistrano::Configuration.instance.load do
-  set :shared_children, %w(system logs pids config archive)
+  set :shared_children, %w(system logs pids config files)
 
   after 'deploy:finalize', 'deploy:like_a_boss'
 
