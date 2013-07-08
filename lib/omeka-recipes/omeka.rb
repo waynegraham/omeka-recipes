@@ -8,8 +8,8 @@ Capistrano::Configuration.instance.load do
     url = ''
     branch = ''
     hash.each do |repo_name, repo_info|
-      url = repo_info['url']
-      branch = repo_info['branch']
+      url = repo_info[:url]
+      branch = repo_info[:branch]
       run "cd #{current_path}/#{directory} && rm -rf #{repo_name}"
       run "cd #{current_path}/#{directory} && git clone #{url} #{repo_name} --quiet"
       run "cd #{current_path}/#{directory} && git fetch --quiet && git checkout #{branch} --quiet" unless branch.to_s.empty?
