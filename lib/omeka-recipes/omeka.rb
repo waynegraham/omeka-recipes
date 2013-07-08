@@ -8,8 +8,8 @@ Capistrano::Configuration.instance.load do
     url = ''
     branch = ''
     hash.each do |repo_name|
-      puts repo_name
       repo_name.each do |con|
+        puts con
         url = con['url']
         branch = con['branch']
         run "cd #{current_path}/#{directory} && rm -rf #{repo_name[0]}"
