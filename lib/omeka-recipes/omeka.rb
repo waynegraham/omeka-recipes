@@ -7,15 +7,12 @@ Capistrano::Configuration.instance.load do
   def git_clone(hash, directory)
     url = ''
     branch = ''
-    hash.each do |repo_name|
-      repo_name.each do |con|
-        puts con
-        url = con['url']
-        branch = con['branch']
-        run "cd #{current_path}/#{directory} && rm -rf #{repo_name[0]}"
-        run "cd #{current_path}/#{directory} && git clone #{url} #{repo_name[0]} --quiet"
-        run "cd #{current_path}/#{directory} && git fetch --quiet && git checkout #{branch} --quiet" unless branch.to_s.empty?
-      end
+    hash.each do |repo_name, repo_info|
+      url = repo_info['url']
+      branch = repo_info['branch']
+      run "cd #{current_path}/#{directory} && rm -rf #{repo_name}"
+      run "cd #{current_path}/#{directory} && git clone #{url} #{repo_name} --quiet"
+      run "cd #{current_path}/#{directory} && git fetch --quiet && git checkout #{branch} --quiet" unless branch.to_s.empty?
     end
   end
 
