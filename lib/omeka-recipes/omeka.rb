@@ -8,7 +8,7 @@ Capistrano::Configuration.instance.load do
     url = ''
     branch = ''
     hash.each do |repo_name|
-      pp(repo_name)
+      puts repo_name
       repo_name.each do |con|
         url = con['url']
         branch = con['branch']
