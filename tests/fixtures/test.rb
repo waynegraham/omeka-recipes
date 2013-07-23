@@ -2,7 +2,7 @@
 
 def fetch_db_ini
   require 'fileutils'
-  require 'IniFile'
+  require 'inifile'
   
   file_path = "./db.ini"
   @db_config = IniFile.new(:filename => file_path).to_h

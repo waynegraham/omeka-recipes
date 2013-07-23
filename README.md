@@ -1,5 +1,4 @@
 # Omeka::Recipes
-
 [![Build Status](https://secure.travis-ci.org/waynegraham/omeka-recipes.png)](http://travis-ci.org/waynegraham/omeka-recipes)
 
 Useful Capistrano recipes including:
@@ -53,8 +52,7 @@ Or install it yourself as:
  
 ## Usage
 
-To set up the initial Capistrano deploy file, go to your application
-folder in the command line and enter the `capify` command:
+To set up the initial Capistrano deploy file, go to your application folder in the command line and enter the `capify` command:
 
 ```bash
 $ capify .
@@ -77,27 +75,43 @@ cap multistage:prepare
 ```
 
 ### Plugins
-Plugins are defined in the `plugins` hash, giving a plugin name, and it's
-`git` repo. Be sure to use a **read-only** version.
+Plugins are defined in the `plugins` hash. Each plugin is defined by a git repository and a branch that should be checked out during deployment. Be sure to reference a **read-only** version of the git repository location:
 
 ```ruby
 set :plugins, {
-  'Neatline' => 'git://github.com/scholarslab/Neatline.git',
-  'NeatlineMaps' => 'git://github.com/scholarslab/NeatlineMaps.git',
-  'CsvImport' => 'git://github.com/omeka/plugin-CsvImport.git',
-  'Scripto' => 'git://github.com/omeka/plugin-Scripto.git'
+  'Neatline' => {
+    :url => 'git://github.com/scholarslab/Neatline.git',
+    :branch => 'develop'
+  },
+  'NeatlineWaypoints' => {
+    :url => 'git://github.com/scholarslab/nl-widget-Waypoints.git',
+    :branch => 'master'
+  }
+  'NeatlineSimile' => {
+    :url => 'git://github.com/scholarslab/nl-widget-Simile.git',
+    :branch => 'master'
+  }
+  'Scripto' => {
+    :url => 'git://github.com/omeka/plugin-Scripto.git',
+    :branch => 'master'
+  }
 }
 ```
 
 ### Themes
 
-Themes are defined in the `themes` hash, passing a theme name and it's
-`git` repository. 
+Themes are defined in the `themes` hash. As with the plugins, define each theme with a git repository location and branch: 
 
 ```ruby
 set :themes, {
-  'neatline' => 'git://github.com/scholarslab/neatlinetheme.git',
-  'emiglio' => 'git://github.com/omeka/theme-emiglio.git'
+  'neatlight' => {
+    :url => 'git://github.com/davidmcclure/neatlight.git',
+    :branch => 'master'
+  },
+  'emiglio' => {
+    :url => 'git://github.com/omeka/theme-emiglio.git',
+    :branch => 'master'
+  }
 }
 ```
 ## Example Configuration
@@ -133,7 +147,7 @@ set :themes, {
 after "deploy:restart", "deploy:cleanup"
 ```
 In each of the stages of your deployment (e.g.
-`deploy/deploy/production.rb`), you will need to add a definition to
+`config/deploy/production.rb`), you will need to add a definition to
 tell capistrano where to go.
 
 ```ruby
@@ -149,14 +163,9 @@ server 'staging.server.org', :app, :db, :web, :primary => true
 
 ### RVM
 
-RVM is disabled by default, but you can enable it by setting `:use_rvm,
-true`. You may also leverage it by setting your `rvm_ruby_string` to an
-appropriate version (default is `1.9.3`).
+RVM is disabled by default, but you can enable it by setting `:use_rvm, true`. You may also leverage it by setting your `rvm_ruby_string` to an appropriate version (default is `1.9.3`).
 
-If `using_rvm` is true, the rvm recipe will load the RVM capistrano
-extensions so you don't have to worry about them during your
-deployments. You will need to make sure you have an `.rvmrc` file in the
-project directory, and system-wide installation on the servers.
+If `using_rvm` is true, the rvm recipe will load the RVM capistrano extensions so you don't have to worry about them during your deployments. You will need to make sure you have an `.rvmrc` file in the project directory, and system-wide installation on the servers.
 
 See [http://rvm.beginrescueend.com/rvm/install](the rvm site) for more information.
 
@@ -176,4 +185,5 @@ See the [LICENSE](https://github.com/waynegraham/omeka-recipes/blob/master/LICEN
 
 * Jeremy Boggs ([clioweb](clioweb))
 * Wayne Graham ([waynegraham](https://github.com/waynegraham))
+* David McClure ([davidmcclure](https://github.com/davidmcclure))
 
