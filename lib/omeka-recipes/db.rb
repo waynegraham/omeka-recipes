@@ -8,7 +8,7 @@ Capistrano::Configuration.instance.load do
       desc "|OmekaRecipes| Performs a compressed database dump. \n
       WARNING: This locks your database tables for the duration of the mysqldump."
       task :dump, :roles => :db, :only => { :primary => true } do
-        FileUtils.mkdir_p "#{shared_path}/backup"
+        #FileUtils.mkdir_p "#{shared_path}/backup"
         prepare_from_ini
         run "mysqldump --user=#{username} --host=#{host} -p #{db_name} | bzip2 -z9 > #{db_remote_file}" do |channel, stream, out|
           channel.send_data "#{password}\n" if out =~ /^Enter password:/
