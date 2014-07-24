@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
 
   gem.extra_rdoc_files = %w(LICENSE README.md)
 
-  gem.add_dependency "capistrano", ">= 2.5.9", "< 3"
+  gem.add_dependency "capistrano", "2.15.5"
   gem.add_dependency "capistrano-ext", "~> 1.2.1"
   gem.add_dependency "capistrano-multistage", "~> 0.0.4"
   gem.add_dependency "capistrano-php", "~> 1.0.0"
