@@ -5,14 +5,20 @@ Capistrano::Configuration.instance.load do
   set :maintenance_basename, 'maitenance' unless exists?(:maintenance_basename)
 
   def git_clone(hash, directory)
-    url = ''
     branch = ''
     hash.each do |repo_name, repo_info|
-      url = repo_info[:url]
-      branch = repo_info[:branch]
+
+      # Clear a stale clone, check out a fresh copy.
       run "cd #{current_path}/#{directory} && rm -rf #{repo_name}"
-      run "cd #{current_path}/#{directory} && git clone #{url} #{repo_name} --quiet"
-      run "cd #{current_path}/#{directory}/#{repo_name} && git fetch --quiet && git checkout #{branch} --quiet" unless branch.to_s.empty?
+      run "cd #{current_path}/#{directory} && git clone #{repo_info[:url]} #{repo_name} --quiet"
+
+      branch = repo_info[:branch]
+
+      # If a branch is provided, check it out.
+      if branch.to_s
+        run "cd #{current_path}/#{directory}/#{repo_name} && git fetch --quiet && git checkout #{branch} --quiet"
+      end
+
     end
   end
 
