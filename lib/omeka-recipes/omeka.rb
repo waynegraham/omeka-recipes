@@ -16,10 +16,7 @@ Capistrano::Configuration.instance.load do
 
       # If a branch is provided, check it out.
       if branch.to_s
-        Dir.chdir("#{current_path}/#{directory}/#{repo_name}") do
-          run "git fetch --quiet"
-          run "git checkout #{branch} --quiet"
-        end
+        run "cd #{current_path}/#{directory}/#{repo_name} && git fetch --quiet && git checkout #{branch} --quiet"
       end
 
     end
