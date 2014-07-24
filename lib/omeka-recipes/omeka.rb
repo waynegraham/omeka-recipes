@@ -1,13 +1,24 @@
 Capistrano::Configuration.instance.load do
 
   set :omeka_branch, "master" unless exists?(:omeka_branch)
-  set :sync_directories, %w(archive) unless exists?(:sync_directories)
+  set :sync_directories, %w(files) unless exists?(:sync_directories)
   set :maintenance_basename, 'maitenance' unless exists?(:maintenance_basename)
 
   def git_clone(hash, directory)
-    hash.each do |name, location|
-      run "cd #{current_path}/#{directory} && rm -rf #{name}"
-      run "cd #{current_path}/#{directory} && git clone #{location} #{name} --quiet"
+    branch = ''
+    hash.each do |repo_name, repo_info|
+
+      # Clear a stale clone, check out a fresh copy.
+      run "cd #{current_path}/#{directory} && rm -rf #{repo_name}"
+      run "cd #{current_path}/#{directory} && git clone #{repo_info[:url]} #{repo_name} --quiet"
+
+      branch = repo_info[:branch]
+
+      # If a branch is provided, check it out.
+      if branch.to_s
+        run "cd #{current_path}/#{directory}/#{repo_name} && git fetch --quiet && git checkout #{branch} --quiet"
+      end
+
     end
   end
 
@@ -16,11 +27,11 @@ Capistrano::Configuration.instance.load do
   end
 
   namespace :omeka do
-    desc '|OmekaRecipes| Ensure the archive directory has write permissions'
-    task :fix_archive_permissions do
-      # This _should_ actually change the permissions of the archive directory to
+    desc '|OmekaRecipes| Ensure the files directory has write permissions'
+    task :fix_files_permissions do
+      # This _should_ actually change the permissions of the files directory to
       # be the owner of process running httpd/apache2 daemon.
-      run "chmod -R 777 #{current_path}/archive"
+      run "chmod -R 777 #{current_path}/files"
     end
 
     desc '|OmekaRecipes| Sync the assets directory to your local system'
@@ -54,14 +65,14 @@ the root.
       run "cd #{current_path}/application/config && mv config.ini.changeme config.ini"
     end
 
-    desc '|OmekaRecipes| Move the archive directory out of the way'
-    task :move_archive_dir do
-      run "mv #{current_path}/archive #{current_path}/archive_deleteme"
+    desc '|OmekaRecipes| Move the files directory out of the way'
+    task :move_files do
+      run "mv #{current_path}/files #{current_path}/files_deleteme"
     end
 
-    desc '|OmekaRecipes| Link the archive directoy for the project'
-    task :link_archive_dir, :except => {:no_release => true} do
-      run "cd #{current_path} && ln -snf #{shared_path}/archive"
+    desc '|OmekaRecipes| Link the files directoy for the project'
+    task :link_files_dir, :except => {:no_release => true} do
+      run "cd #{current_path} && ln -snf #{shared_path}/files"
     end
 
     desc '|OmekaRecipes| Add the db.ini to the shared directory'
@@ -139,10 +150,10 @@ the root.
     end
   end
 
-  after 'deploy:cold', 'omeka:fix_archive_permissions', 'omeka:move_archive_dir'
+  after 'deploy:cold', 'omeka:fix_files_permissions', 'omeka:move_files_dir'
   after 'deploy:setup', 'omeka:move_files_to_shared'
-  #before 'deploy:create_symlink', 'omeka:move_archive_dir'
-  #after 'deploy:create_symlink', 'omeka:link_archive_dir'
+  #before 'deploy:create_symlink', 'omeka:move_files_dir'
+  #after 'deploy:create_symlink', 'omeka:link_files_dir'
   after 'deploy', 'omeka:get_themes', 'omeka:get_plugins', 'omeka:rename_files'
 
 end
